@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Untuk Kamu 🌹</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0015;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Georgia', serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Bintang */
+  .stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle linear infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.4); }
+  }
+
+  /* Petals jatuh */
+  .petal {
+    position: fixed;
+    top: -20px;
+    width: 12px;
+    height: 16px;
+    border-radius: 50% 0 50% 0;
+    opacity: 0.8;
+    animation: fall linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 0.8; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Container utama */
+  .container {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 20px;
+  }
+
+  /* SVG Bunga */
+  .flower-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+
+  .flower-svg {
+    animation: sway 3s ease-in-out infinite;
+    transform-origin: bottom center;
+    filter: drop-shadow(0 0 12px rgba(255, 100, 150, 0.5));
+  }
+
+  .flower-svg:nth-child(2) { animation-delay: 0.5s; }
+  .flower-svg:nth-child(3) { animation-delay: 1s; }
+
+  @keyframes sway {
+    0%, 100% { transform: rotate(-4deg); }
+    50% { transform: rotate(4deg); }
+  }
+
+  /* Amplop */
+  .envelope-wrap {
+    margin: 20px auto;
+    cursor: pointer;
+    position: relative;
+    width: 200px;
+  }
+
+  .envelope {
+    width: 200px;
+    height: 130px;
+    background: linear-gradient(135deg, #ff6b9d, #ff4477);
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(255, 68, 119, 0.4);
+    transition: transform 0.3s;
+  }
+
+  .envelope:hover { transform: scale(1.05); }
+
+  .envelope::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 0; height: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-top: 65px solid #ff2255;
+    transition: transform 0.6s ease;
+    transform-origin: top center;
+    z-index: 2;
+  }
+
+  .envelope.open::before {
+    transform: rotateX(180deg);
+  }
+
+  .envelope::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 0;
+    border-left: 100px solid #e03060;
+    border-right: 100px solid #e03060;
+    border-top: 65px solid transparent;
+  }
+
+  .envelope-left {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 0;
+    border-bottom: 130px solid #c02050;
+    border-right: 100px solid transparent;
+  }
+
+  .envelope-right {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 0; height: 0;
+    border-bottom: 130px solid #c02050;
+    border-left: 100px solid transparent;
+  }
+
+  /* Surat */
+  .letter {
+    display: none;
+    background: #fff8f0;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 16px auto;
+    max-width: 340px;
+    box-shadow: 0 4px 30px rgba(255, 100, 150, 0.3);
+    border: 1px solid #ffd0e0;
+    animation: popIn 0.5s ease;
+  }
+
+  .letter.show { display: block; }
+
+  @keyframes popIn {
+    0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .letter p {
+    color: #8b2252;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 10px;
+  }
+
+  .letter .sign {
+    color: #ff4477;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 10px;
+  }
+
+  /* Judul */
+  .title {
+    font-size: clamp(22px, 5vw, 36px);
+    color: #ffb3cc;
+    text-shadow: 0 0 20px rgba(255, 100, 150, 0.8);
+    margin-bottom: 8px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: #ff88aa;
+    margin-bottom: 24px;
+    letter-spacing: 2px;
+  }
+
+  @keyframes pulse {
+    0%, 100% { text-shadow: 0 0 20px rgba(255, 100, 150, 0.8); }
+    50% { text-shadow: 0 0 40px rgba(255, 100, 150, 1), 0 0 80px rgba(255, 50, 100, 0.5); }
+  }
+
+  /* Tombol buka surat */
+  .btn-surat {
+    background: linear-gradient(135deg, #ff4477, #ff6b9d);
+    color: white;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 30px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 12px;
+    box-shadow: 0 4px 15px rgba(255, 68, 119, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: Georgia, serif;
+  }
+
+  .btn-surat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 68, 119, 0.6);
+  }
+
+  .hint {
+    font-size: 12px;
+    color: #ff88aa88;
+    margin-top: 8px;
+    animation: blink 1.5s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* Heart floating */
+  .hearts {
+    position: fixed;
+    bottom: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .heart-float {
+    position: absolute;
+    bottom: -50px;
+    font-size: 20px;
+    animation: floatUp linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(0.5); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.4; }
+    100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Bintang -->
+<div class="stars" id="stars"></div>
+
+<!-- Hati melayang -->
+<div class="hearts" id="hearts"></div>
+
+<!-- Kelopak jatuh -->
+<div id="petals"></div>
+
+<div class="container">
+  <h1 class="title">🌹 Untuk Kamu 🌹</h1>
+  <p class="subtitle">— dengan sepenuh hati —</p>
+
+  <!-- Tiga Bunga SVG -->
+  <div class="flower-wrap">
+
+    <!-- Bunga Merah -->
+    <svg class="flower-svg" width="90" height="180" viewBox="0 0 90 180">
+      <!-- Batang -->
+      <path d="M45 180 Q42 140 45 100" stroke="#2d8a3e" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <!-- Daun kiri -->
+      <path d="M45 145 Q20 130 18 115 Q35 118 45 135" fill="#3aaf52"/>
+      <!-- Daun kanan -->
+      <path d="M45 125 Q68 112 72 97 Q55 102 45 118" fill="#3aaf52"/>
+      <!-- Kelopak merah -->
+      <ellipse cx="45" cy="65" rx="14" ry="22" fill="#ff1744" transform="rotate(-30 45 80)"/>
+      <ellipse cx="45" cy="65" rx="14" ry="22" fill="#ff1744" transform="rotate(30 45 80)"/>
+      <ellipse cx="45" cy="60" rx="14" ry="22" fill="#ff4466" transform="rotate(90 45 75)"/>
+      <ellipse cx="45" cy="60" rx="14" ry="22" fill="#ff4466" transform="rotate(-90 45 75)"/>
+      <ellipse cx="45" cy="58" rx="14" ry="22" fill="#ff6688" transform="rotate(60 45 73)"/>
+      <ellipse cx="45" cy="58" rx="14" ry="22" fill="#ff6688" transform="rotate(-60 45 73)"/>
+      <!-- Pusat -->
+      <circle cx="45" cy="72" r="12" fill="#ffdd00"/>
+      <circle cx="45" cy="72" r="7" fill="#ff9900"/>
+    </svg>
+
+    <!-- Bunga Pink -->
+    <svg class="flower-svg" width="90" height="200" viewBox="0 0 90 200" style="margin-top:-20px">
+      <path d="M45 200 Q43 155 45 110" stroke="#2d8a3e" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M45 160 Q18 145 16 128 Q33 132 45 150" fill="#3aaf52"/>
+      <path d="M45 138 Q70 122 74 106 Q57 112 45 128" fill="#3aaf52"/>
+      <ellipse cx="45" cy="70" rx="14" ry="22" fill="#ff69b4" transform="rotate(-30 45 85)"/>
+      <ellipse cx="45" cy="70" rx="14" ry="22" fill="#ff69b4" transform="rotate(30 45 85)"/>
+      <ellipse cx="45" cy="65" rx="14" ry="22" fill="#ff85c1" transform="rotate(90 45 80)"/>
+      <ellipse cx="45" cy="65" rx="14" ry="22" fill="#ff85c1" transform="rotate(-90 45 80)"/>
+      <ellipse cx="45" cy="63" rx="14" ry="22" fill="#ffaad4" transform="rotate(60 45 78)"/>
+      <ellipse cx="45" cy="63" rx="14" ry="22" fill="#ffaad4" transform="rotate(-60 45 78)"/>
+      <circle cx="45" cy="78" r="12" fill="#ffe066"/>
+      <circle cx="45" cy="78" r="7" fill="#ffb300"/>
+    </svg>
+
+    <!-- Bunga Ungu -->
+    <svg class="flower-svg" width="90" height="180" viewBox="0 0 90 180">
+      <path d="M45 180 Q42 140 45 100" stroke="#2d8a3e" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M45 145 Q20 130 18 115 Q35 118 45 135" fill="#3aaf52"/>
+      <path d="M45 125 Q68 112 72 97 Q55 102 45 118" fill="#3aaf52"/>
+      <ellipse cx="45" cy="65" rx="14" ry="22" fill="#9c27b0" transform="rotate(-30 45 80)"/>
+      <ellipse cx="45" cy="65" rx="14" ry="22" fill="#9c27b0" transform="rotate(30 45 80)"/>
+      <ellipse cx="45" cy="60" rx="14" ry="22" fill="#ba52cc" transform="rotate(90 45 75)"/>
+      <ellipse cx="45" cy="60" rx="14" ry="22" fill="#ba52cc" transform="rotate(-90 45 75)"/>
+      <ellipse cx="45" cy="58" rx="14" ry="22" fill="#ce80dd" transform="rotate(60 45 73)"/>
+      <ellipse cx="45" cy="58" rx="14" ry="22" fill="#ce80dd" transform="rotate(-60 45 73)"/>
+      <circle cx="45" cy="72" r="12" fill="#fff176"/>
+      <circle cx="45" cy="72" r="7" fill="#f9a825"/>
+    </svg>
+
+  </div>
+
+  <!-- Amplop -->
+  <div class="envelope-wrap">
+    <div class="envelope" id="envelope" onclick="bukaSurat()">
+      <div class="envelope-left"></div>
+      <div class="envelope-right"></div>
+    </div>
+    <p class="hint">👆 klik untuk membuka surat</p>
+  </div>
+
+  <!-- Surat -->
+  <div class="letter" id="letter">
+    <p>Hai dipaapuyy... 💕</p>
+    <p>Aku ingin kamu tahu,
+     </p>DASAR JEYEK
+  </div>
+
+</div>
+
+<script>
+  // Bintang
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      top:${Math.random()*100}%;
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*3+2}s;
+      animation-delay:${Math.random()*4}s;
+    `;
+    starsEl.appendChild(s);
+  }
+
+  // Kelopak jatuh
+  const petalColors = ['#ff6b9d','#ff4477','#ffaacc','#ff85c1','#ce80dd','#ff1744'];
+  const petalsEl = document.getElementById('petals');
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.cssText = `
+      left:${Math.random()*100}%;
+      background:${petalColors[Math.floor(Math.random()*petalColors.length)]};
+      animation-duration:${Math.random()*5+5}s;
+      animation-delay:${Math.random()*8}s;
+      width:${Math.random()*8+8}px;
+      height:${Math.random()*10+10}px;
+      transform:rotate(${Math.random()*360}deg);
+    `;
+    petalsEl.appendChild(p);
+  }
+
+  // Hati melayang
+  const heartsEl = document.getElementById('hearts');
+  const heartSymbols = ['❤️','💕','💖','💗','💓','🌸'];
+  for (let i = 0; i < 15; i++) {
+    const h = document.createElement('div');
+    h.className = 'heart-float';
+    h.textContent = heartSymbols[Math.floor(Math.random()*heartSymbols.length)];
+    h.style.cssText = `
+      left:${Math.random()*100}%;
+      font-size:${Math.random()*14+12}px;
+      animation-duration:${Math.random()*6+7}s;
+      animation-delay:${Math.random()*10}s;
+    `;
+    heartsEl.appendChild(h);
+  }
+
+  // Buka surat
+  function bukaSurat() {
+    const env = document.getElementById('envelope');
+    const letter = document.getElementById('letter');
+    env.classList.toggle('open');
+    letter.classList.toggle('show');
+  }
+</script>
+</body>
+</html>
